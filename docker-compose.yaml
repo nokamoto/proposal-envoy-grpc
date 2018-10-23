@@ -12,3 +12,30 @@ services:
       dockerfile: Dockerfile.client
     depends_on:
       - server
+  envoy:
+    image: envoyproxy/envoy:latest
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      - server
+    ports:
+      - 9901:9901
+      - 10000:10000
+  prom:
+    image: prom/prometheus:v2.4.3
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - envoy
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana:5.3.1
+    volumes:
+      - ./datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ./dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml:ro
+      - ./envoy-service.json:/var/lib/grafana/dashboards/envoy-service.json:ro
+    depends_on:
+      - prom
+    ports:
+      - 3000:3000
