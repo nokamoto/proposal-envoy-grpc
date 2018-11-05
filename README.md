@@ -1,10 +1,5 @@
 # proposal-envoy-grpc
 
-## Build
-```bash
-./build.sh
-```
-
 ## Run
 
 ```bash
@@ -13,7 +8,8 @@ docker-compose logs -f envoy
 ```
 
 ```
-docker-compose exec client client -h envoy -p 10000
+go get -u github.com/nokamoto/example-ping-service-client
+example-ping-service-client -h localhost -p 10000
 ```
 
 | url | module |
