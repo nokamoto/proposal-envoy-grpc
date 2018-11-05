@@ -1,17 +1,9 @@
 version: '3'
 services:
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile.server
+    image: nokamoto13/example-ping-service-server:v0
     ports:
       - 9000:9000
-  client:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
-    depends_on:
-      - server
   envoy:
     image: envoyproxy/envoy:latest
     volumes:
